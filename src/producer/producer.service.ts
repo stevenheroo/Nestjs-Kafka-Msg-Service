@@ -1,8 +1,8 @@
-import { Injectable } from "@nestjs/common";
-import { Consumer, Kafka, logLevel, Producer } from "kafkajs";
+import { Injectable, OnModuleInit } from "@nestjs/common";
+import { Consumer, Kafka, Producer } from "kafkajs";
 
 @Injectable()
-export class ProducerService {
+export class ProducerService implements OnModuleInit {
   private readonly producer: Producer;
   private readonly consumer: Consumer;
 
@@ -16,6 +16,11 @@ export class ProducerService {
     this.producer = kafkaClient.producer();
     this.consumer = kafkaClient.consumer({groupId: 'test-group'});
 
+  }
+
+  async onModuleInit() {
+    console.log("Producer service  initialized ......");
+    await this.consumeMessage();
   }
 
   async sendMessage(topic, messages: string) {
