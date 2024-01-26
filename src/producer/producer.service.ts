@@ -25,7 +25,7 @@ export class ProducerService implements OnModuleInit {
 
   async sendMessage(topic, messages: string) {
     await this.producer.connect()
-    await this.producer.send({
+    const d = await this.producer.send({
       topic: topic,
       messages: [
         { value: messages },

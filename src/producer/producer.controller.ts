@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, HttpException, HttpStatus, Post } from "@nestjs/common";
 import { ProducerService } from "./producer.service";
 
 @Controller('producer')
@@ -9,5 +9,9 @@ export class ProducerController {
   async sendMessage(@Body() body: { topic: string; messages: string }) {
     const { topic , messages} = body;
     await this.producerService.sendMessage(topic, messages);
+
+    return {
+      'body' : new HttpException('success', HttpStatus.OK)
+    }
   }
 }
